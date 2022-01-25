@@ -5,30 +5,23 @@ on:
     - cron:  '0 4 * * *'
   workflow_dispatch:
 
+
 jobs:
   docker:
     name: Build and publish
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Get Latest Tag
         uses: oprypin/find-latest-tag@v1
         with:
           repository: cloudflare/cloudflared
           releases-only: true
         id: latest
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: |
-            dbrbc/cloudflared
-            ghcr.io/dbrbc/cloudflared
-
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -55,5 +48,8 @@ jobs:
           build-args: VERSION=${{ steps.latest.outputs.tag }}
           platforms: linux/arm,linux/arm64,linux/amd64
           push: true
-          tags: ${{ steps.latest.outputs.tag }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/dbrbc/cloudflared:${{ steps.latest.outputs.tag }}
+            ghcr.io/dbrbc/cloudflared:latest
+            dbrbc/cloudflared:${{ steps.latest.outputs.tag }}
+            dbrbc/cloudflared:latest
