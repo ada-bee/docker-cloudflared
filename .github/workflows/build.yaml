@@ -49,7 +49,7 @@ jobs:
           platforms: linux/arm,linux/arm64,linux/amd64
           push: true
           tags: |
-            ghcr.io/dbrbc/cloudflared:${{ steps.latest.outputs.tag }}
-            ghcr.io/dbrbc/cloudflared:latest
+            ghcr.io/ada-bee/cloudflared:${{ steps.latest.outputs.tag }}
+            ghcr.io/ada-bee/cloudflared:latest
             dbrbc/cloudflared:${{ steps.latest.outputs.tag }}
             dbrbc/cloudflared:latest
